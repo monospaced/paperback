@@ -2,9 +2,9 @@
 
 Paperback is a web based e-book reading system, in 2 parts:
 
-1. [Ebla](#Ebla), an e-book reading web app.
+1. [Ebla](#ebla), an e-book reading web app.
 
-2. [Melk](#Melk), utility to format e-book files for reading in Ebla.
+2. [Melk](#melk), utility to format e-book files for reading in Ebla.
 
 Currently the only e-book file format supported by Melk/Ebla is [EPUB 2](http://idpf.org/epub/201).
 
