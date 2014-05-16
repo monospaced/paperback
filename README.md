@@ -22,7 +22,7 @@ See the [GitHub issues](https://github.com/monospaced/paperback/issues) for more
 
 Ebla is an e-book reading web app.
 
-Initally designed and developed by @monospaced, @thegingerbloke and @carlotartaglia, it has now been open sourced as part of this project.
+Initally designed and developed by monospaced, thegingerbloke and carlotartaglia, Ebla has been open sourced as part of this project.
 
 ### Usage
 
@@ -31,7 +31,9 @@ Ebla needs to be running on the `http://` protocol, so once you have downloaded 
 If you’re on OS X or Linux, you can simply:
 
 1. Navigate a console to the `paperback/` directory
+
 2. Enter `python -m SimpleHTTPServer 8888`
+
 3. Navigate a browser to `http://localhost:8888/`
 
 Then open the included sample book and start reading!
@@ -46,7 +48,7 @@ If you’re on OS X or Linux you probably have Ruby installed already; test with
 
 You can test for Node and NPM with `node -v` and `npm -v` in your terminal. If you don't have them, head over to [nodejs.org](http://nodejs.org/).
 
-To build Ebla (with the required dependencies); from inside the `ebla/` directory run `grunt` to build once, or `grunt watch` to build automatically whenever a Sass of JavaScript file is updated.
+To build Ebla (with the required dependencies); from inside the `ebla/` directory run `grunt` to build once, or `grunt watch` to build automatically whenever a Sass or JavaScript file is updated.
 
 ### AngularJS
 
