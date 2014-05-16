@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='utf-8'?>
+<package xmlns="http://www.idpf.org/2007/opf" version="2.0" unique-identifier="uuid_id">
+  <metadata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:opf="http://www.idpf.org/2007/opf" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:dc="http://purl.org/dc/elements/1.1/">
+    <dc:language>en</dc:language>
+    <dc:creator opf:file-as="Unknown" opf:role="aut">Cory Doctorow</dc:creator>
+    <dc:title>The Things that Make Me Weak and Strange Get Engineered Away</dc:title>
+    <dc:identifier id="uuid_id" opf:scheme="uuid">0aea4919-3b8d-4df2-a9a4-6f2f3025e964</dc:identifier>
+		<meta name="cover" content="cover-image"/>
+  </metadata>
+  <manifest>
+    <item href="index.html" id="id1" media-type="application/xhtml+xml"/>
+		<item href="cover.html" id="cover" media-type="application/xhtml+xml"/>
+		<item href="the_cover.jpg" id="cover-image" media-type="image/jpeg"/>
+    <item href="stylesheet.css" id="css" media-type="text/css"/>
+    <item href="toc.ncx" media-type="application/x-dtbncx+xml" id="ncx"/>
+  </manifest>
+  <spine toc="ncx">
+		<itemref idref="cover"/>
+    <itemref idref="id1"/>
+  </spine>
+	<guide>
+		<reference href="cover.html" type="cover" title="Cover"/>
+  </guide>
+</package>

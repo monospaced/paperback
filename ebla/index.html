@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en" data-ng-app="eblaApp" data-ng-controller="eblaAppController">
+<head><meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+  <meta http-equiv="cleartype" content="on">
+
+  <title data-ng-bind="book.title">Ebla</title>
+
+  <!--<meta name="description" content="{description}">-->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+  <!--
+  <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../books/{{book.slug}}/apple-touch-icon-precomposed.png">
+  <link rel="apple-touch-startup-image" href="../books/{{book.slug}}/splash.png">
+  <link rel="shortcut icon" href="../books/{{book.slug}}/favicon.ico">
+  -->
+
+  <link rel="stylesheet" href="stylesheets/ebla.css">
+
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+  <script>
+    jQuery || document.write('<script src="javascripts/libs/jquery-1.6.2.min.js">\x3C/script>')
+  </script>
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.0-beta.8/angular.js"></script>
+  <script>
+    angular || document.write('<script src="javascripts/libs/angular-1.3.0-beta.8.min.js">\x3C/script>')
+  </script>
+  <script src="javascripts/libs/modernizr-custom.js"></script>
+</head>
+<body>
+	<div id="container">
+		<div class="header" role="banner">
+			<h1><cite>{{book.title}}</cite> <span class="author">{{book.creator}}</span></h1>
+
+			<div class="nav" role="navigation">
+			  <h2>Table of contents</h2>
+        <ol class="nav-list">
+          <li data-ng-repeat="content in contents" id="navpoint-{{content.navPoint}}">
+            <a href="{{book.location}}{{content.hash}}" target="sandbox">{{content.title}}</a>
+          </li>
+        </ol>
+			</div>
+
+			<ul class="toolbar toolbar-alpha">
+				<li><a href="../" class="icon icon-close-book" title="Close book">Close book</a></li>
+			</ul>
+
+			<ul class="toolbar toolbar-beta">
+				<li><a href="#_" class="toc icon icon-toc" title="Table of Contents">TOC</a></li>
+				<li><span class="icon icon-format icon-disabled" title="Coming soon…"></span></li>
+				<li><span class="icon icon-notes icon-disabled" title="Coming soon…"></span></li>
+				<li><span class="icon icon-search icon-disabled" title="Coming soon…"></span></li>
+			</ul>
+		</div>
+
+		<div id="main" role="main">
+			<iframe id="sandbox" name="sandbox" frameborder="0" src="{{iframeSrc}}"></iframe>
+			<div id="loader">
+        <div id="loader-icon" class="icon"><div id="loader-icon-inner"></div></div>
+      </div>
+		</div>
+
+		<div class="footer" role="contentinfo"></div>
+
+		<span class="shim-arr shim-bck"><span class="icon">←</span></span>
+		<span class="shim-arr shim-fwd"><span class="icon">→</span></span>
+	</div>
+  <script src="javascripts/ebla.min.js"></script>
+  <script>
+    var bookJson;
+
+    angular.module('eblaApp', [])
+      .controller('eblaAppController', [
+        '$scope', '$http', '$sce', '$timeout',
+        function($scope, $http, $sce, $timeout) {
+          'use strict';
+
+          var slug = window.location.search.split('?book=')[1];
+
+          bookJson = '../books/' + slug + '/book.json';
+
+          $http.get(bookJson).then(function(response) {
+            var data = response.data;
+
+            $scope.book = data.metaData;
+            $scope.contents = data.contentData;
+            $scope.iframeSrc = $sce.trustAsResourceUrl($scope.book.location + $scope.contents[0].hash);
+
+            $timeout(Ebla.toc.initTocLinks);
+          });
+        }
+      ]);
+  </script>
+</body>
+</html>

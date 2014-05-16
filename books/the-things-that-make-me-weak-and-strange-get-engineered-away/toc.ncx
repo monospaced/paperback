@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='utf-8'?>
+<ncx xmlns="http://www.daisy.org/z3986/2005/ncx/" version="2005-1" xml:lang="eng">
+  <head>
+    <meta content="0aea4919-3b8d-4df2-a9a4-6f2f3025e964" name="dtb:uid"/>
+    <meta content="2" name="dtb:depth"/>
+    <meta content="calibre (0.8.39)" name="dtb:generator"/>
+    <meta content="0" name="dtb:totalPageCount"/>
+    <meta content="0" name="dtb:maxPageNumber"/>
+  </head>
+  <docTitle>
+    <text>The Things that Make Me Weak and Strange Get Engineered Away</text>
+  </docTitle>
+  <navMap>
+    <navPoint id="9cd98e60-d213-43a4-8e8b-ffeb7ab0e88f" playOrder="1">
+      <navLabel>
+        <text>The Things that Make Me Weak and Strange Get Engineered Away</text>
+      </navLabel>
+      <content src="index.html"/>
+    </navPoint>
+  </navMap>
+</ncx>

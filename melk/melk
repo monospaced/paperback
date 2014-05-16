@@ -1,0 +1,229 @@
+#!/usr/bin/env python
+import json
+import optparse
+import os
+import re
+import shutil
+import time
+import unicodedata
+import xml.etree.ElementTree as xml
+import zipfile
+from bs4 import BeautifulSoup
+try:
+    import typogrify.filters as typogrify
+    assert typogrify  # silence linter
+except ImportError:
+    typogrify = False
+
+
+def _slugify(value):
+    """
+    Normalizes string, converts to lowercase, removes non-alpha characters,
+    and converts spaces to hyphens.
+
+    From Django's "django/template/defaultfilters.py".
+    """
+
+    strip = re.compile(r'[^\w\s-]')
+    hyphenate = re.compile(r'[-\s]+')
+    if not isinstance(value, unicode):
+        value = unicode(value)
+    value = unicodedata.normalize('NFKD', value).encode('ascii', 'ignore')
+    value = unicode(strip.sub('', value).strip().lower())
+    return hyphenate.sub('-', value)
+
+
+def _parse_epub(epub, path):
+    """Convert ePub file to Ebla format"""
+
+    # ePub xml namespace
+    ns = {
+        'n': 'urn:oasis:names:tc:opendocument:xmlns:container',
+        'pkg': 'http://www.idpf.org/2007/opf',
+        'dc': 'http://purl.org/dc/elements/1.1/',
+        'ncx': 'http://www.daisy.org/z3986/2005/ncx/',
+        'x': 'http://www.w3.org/1999/xhtml'
+    }
+
+    # script directory
+    melk = os.path.dirname(os.path.realpath(__file__))
+
+    # prepare to read from the .epub file
+    zip = zipfile.ZipFile(epub)
+
+    # find the 'contents' metafile
+    text = zip.read('META-INF/container.xml')
+    tree = xml.fromstring(text)
+    rootfile = tree.findall('.//{' + ns['n'] +
+                            '}rootfile')[0].attrib['full-path']
+
+    # grab the 'metadata' block
+    text = zip.read(rootfile)
+    tree = xml.fromstring(text)
+    metadata = tree.findall('{' + ns['pkg'] + '}metadata')[0]
+
+    # grab the relevant metadata
+    # identifier, title and language are all mandatory, but can be multiple
+    # creator is optional
+    identifier = metadata.findall('{' + ns['dc'] + '}identifier')[0].text
+    title = metadata.findall('{' + ns['dc'] + '}title')[0].text
+    language = metadata.findall('{' + ns['dc'] + '}language')[0].text
+    creator = metadata.findall('{' + ns['dc'] + '}creator')[0].text
+    slug = _slugify(title)
+
+    # build the metadata object
+    metadata = {
+        "id": identifier,
+        "title": title,
+        "language": language,
+        "creator": creator,
+        "location": path + slug + '/',
+        "slug": slug
+    }
+
+    # grab the path (if any)
+    rootpath = os.path.split(rootfile)[0]
+    if rootpath:
+        rootpath += '/'
+    else:
+        rootpath = ''
+    rootdepth = rootpath.count('/')
+
+    # find the 'table of contents' metafile
+    id_ = tree.findall('{' + ns['pkg'] + '}spine')[0].attrib['toc']
+    manifest = tree.findall('.//{' + ns['pkg'] + '}item')
+    for i in manifest:
+        if i.attrib['id'] == id_:
+            toc = i.attrib['href']
+            break
+
+    # grab the 'navigation' blocks
+    text = zip.read(rootpath + toc)
+    tree = xml.fromstring(text)
+    navpoints = tree.findall('.//{' + ns['ncx'] + '}navPoint')
+    len_ = len(navpoints)
+
+    # build the navigation json
+    contentdata = '"contentData":['
+    for counter, i in enumerate(navpoints):
+        content = i.findall('{' + ns['ncx'] + '}content')[0]
+        src = rootpath + content.attrib['src']
+        navlabel = i.findall('.//{' + ns['ncx'] + '}text')[0].text
+        if navlabel is None:
+            navlabel = src.split('.')[0]
+        if not '#' in src:
+            size = len(zip.read(src))
+            marker = 'true'
+        else:
+            size = 1
+            marker = 'false'
+        contentdata += '{"navPoint":"' + str(counter) + '",'
+        contentdata += '"title":"' + navlabel + '",'
+        contentdata += '"hash":"' + src + '",'
+        contentdata += '"size":' + str(size) + ','
+        contentdata += '"marker":' + marker
+        if (counter + 1) != len_:
+            contentdata += '},'
+        else:
+            contentdata += '}]}'
+
+    # update the books.json file
+    os.chdir(melk + '/' + path)
+    with open('books.json') as f:
+        books = json.load(f)
+    for book in books:
+        if book['id'] == metadata['id']:
+            books.remove(book)
+            break
+    books.append(metadata)
+    with open('books.json', 'w') as f:
+        json.dump(books, f)
+
+    # write the book.json file
+    if os.path.isdir(slug):
+        shutil.rmtree(slug)
+    os.mkdir(slug)
+    os.chdir(slug)
+    metadata = json.dumps(metadata)
+    book = open('book.json', 'w')
+    book.write(('{"metaData":' + metadata + ',' + contentdata).encode('utf  -8'))
+    book.close()
+
+    # unzip the .epub file
+    for f in zip.namelist():
+        if f.endswith('/'):
+            os.makedirs(f)
+        else:
+            zip.extract(f)
+
+    # modify .epub 'html' components
+    stylepath = '../../'
+    while rootdepth > 0:
+        stylepath += '../'
+        rootdepth -= 1
+    head = ('<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" '
+            '"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">'
+            '<html xmlns="' + ns['x'] + '" '
+            'xml:lang="' + language + '" lang="' + language + '">'
+            '<head>'
+            '<meta http-equiv="Content-Type" '
+            'content="text/html; charset=utf-8"/>'
+            '<title>' + title + '</title>'
+            '<meta name="format-detection" content="telephone=no"/>'
+            '<link rel="stylesheet" type="text/css" '
+            'href="' + stylepath + 'ebla/stylesheets/book.css"/>')
+    if rootpath:
+        os.chdir(rootpath)
+    for f in os.listdir('.'):
+        if (f.endswith('.xml') or
+            f.endswith('.xhtml') or
+            f.endswith('.html') or
+            f.endswith('.htm')):
+                soup = BeautifulSoup(open(f))
+                styles = ''
+                #stylesheets = soup.find_all(type='text/css', rel='stylesheet')
+                #for s in stylesheets:
+                #    styles += str(s)
+                body = str(soup.body)
+                if (typogrify):
+                    body = typogrify.typogrify(body)
+                doc = head + styles + '</head>' + body + '</html>'
+                f = open(f, 'w')
+                f.write(doc)
+                f.close()
+
+    # reset directory
+    os.chdir(melk)
+
+
+def _is_file_or_folder(epubs, path):
+    """Process single file or multiple files in folder"""
+
+    if os.path.isdir(epubs):
+        for f in os.listdir(epubs):
+            if f.endswith('.epub'):
+                _parse_epub(epubs + '/' + f, path)
+    else:
+        _parse_epub(epubs, path)
+
+
+def main():
+    """Runs program and handles command line options"""
+
+    desc = """%prog formats epub files for use in an e-book reading web app"""
+    p = optparse.OptionParser(usage=('Usage: %prog <options> '
+                                     '/path/to/file.epub or /path/to/epubs'),
+                              description=desc, version='0.1.0')
+    p.add_option('--books', '-b', default='../books/',
+                 help=('specify path to books \nrelative to script directory '
+                       '\ndefaults to %default'))
+    options, arguments = p.parse_args()
+    if len(arguments) == 1:
+        _is_file_or_folder(arguments[0], options.books)
+    else:
+        p.print_help()
+
+if __name__ == '__main__':
+    start_time = time.time()
+    main()
+    print time.time() - start_time, 'seconds'

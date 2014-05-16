@@ -1,0 +1,60 @@
+h1 {
+  width: 92% !important;
+  line-height: 1.36752137 !important;
+}
+img {
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}
+.scene-break {
+  text-align: center;
+}
+.email, .email + p, .scene-break + p {
+  text-indent: 0;
+}
+.email, .email + p {
+  margin-top: 32px !important; 
+}
+.scene-break + .email {
+  margin-top: 0 !important;
+}
+.email {
+  font-family: "courier new", courier, monospace;
+  text-align: left !important;
+  -webkit-hyphens: none !important; 
+     -moz-hyphens: none !important; 
+      -ms-hyphens: none !important;  
+          hyphens: none !important;
+}
+.verse {
+  margin: 0;
+}
+.verse pre {
+  display: table;
+  width: auto;
+  max-width: 100%;
+  margin: 0 auto;
+  text-align: center;
+  font-style: italic;
+  font-family: cambria,georgia,serif;
+  white-space: pre-wrap;
+}
+.verse pre span {
+  display: inline-block;
+  text-align: left;
+  *white-space: pre;
+}
+.verse cite {
+  font-style: normal;
+}
+@media only screen and (max-width: 523px) {
+  h1 {
+    line-height: 1.4857142 !important;
+  }
+}
+@media only screen and (max-width: 320px) {
+  h1 {
+    width: 100% !important;
+  }
+}

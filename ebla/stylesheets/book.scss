@@ -1,0 +1,418 @@
+/* =PLATE
+		functional rules
+		required for reading system to work as expected
+--------------------------------------------- */
+
+/* gloabl reset for ePub XHTML elements
+	 http://idpf.org/epub/20/spec/OPS_2.0.1_draft.htm#Section2.2 */
+
+html, body,
+abbr, acronym, address, blockquote, br, cite, code, dfn, div, em,
+h1, h2, h3, h4, h5, h6, kbd, p, pre, q, samp, span, strong, var,
+a,
+dl, dt, dd, ol, ul, li,
+object, param,
+b, big, hr, i, small, sub, sup, tt,
+del, ins,
+bdo,
+caption, col, colgroup, table, tbody, td, tfoot, th, thead, tr,
+img,
+area, map {
+	float: none ! important;
+	margin-top: 0 !important;
+	margin-bottom: 0 !important;
+	padding-top: 0 !important;
+	padding-bottom: 0 !important;
+	border: 0 !important;
+	vertical-align: baseline;
+	font: inherit;
+	font-size: 100% !important;
+}
+
+/* additonal reset, not applied to html & body */
+abbr, acronym, address, blockquote, br, cite, code, dfn, div, em,
+h1, h2, h3, h4, h5, h6, kbd, p, pre, q, samp, span, strong, var,
+a,
+dl, dt, dd, ol, ul, li,
+object, param,
+b, big, hr, i, small, sub, sup, tt,
+del, ins,
+bdo,
+caption, col, colgroup, table, tbody, td, tfoot, th, thead, tr,
+img,
+area, map {
+	overflow: visible !important;
+	min-height: 0 !important;
+	max-width: 100% !important;
+	height: auto !important;
+	word-wrap: break-word !important;
+	text-rendering: auto !important;
+}
+
+/* addtional reset for tables */
+
+table {
+  border-spacing: 0 !important;
+  border-collapse: collapse !important;
+}
+
+/* addtional reset for html */
+
+html {
+	overflow: hidden !important;
+	margin: 0 !important;
+	padding: 0 !important;
+}
+
+/* addtional reset for body (no-js) */
+
+body {
+	position: absolute;
+	margin: 0 !important;
+	padding: 2% !important;
+	width: 96%;
+}
+
+/* addtional reset for body#ebla-js (the id is applied on init()) */
+
+#ebla-js {
+	overflow: visible !important;
+	padding: 0 !important; /* overide no-js rule */
+	width: 100%; /* overide no-js rule */
+	-webkit-column-gap: 0;
+		 -moz-column-gap: 0;
+					column-gap: 0;
+	-webkit-text-size-adjust: none;
+			-ms-text-size-adjust: none;
+}
+
+/* additional reset for 'replaced' elements */
+
+img,
+object {
+	clear: both;
+	max-height: 100% !important;
+	width: auto !important;
+	-webkit-column-break-inside: avoid;
+					column-break-inside: avoid;
+}
+
+/* =GUIDE
+		the "house" style
+--------------------------------------------- */
+
+/* suggested defaults */
+
+body {
+	background: #fff;
+	color: #333;
+	font-family: cambria, georgia, serif;
+	-webkit-font-smoothing: subpixel-antialiased;
+}
+
+p {
+	text-align: justify;
+	text-indent: 0;
+}
+
+p + p {
+	text-indent: 1em; /* paragraphs have no vertical margins, indenting is required */
+}
+
+ol {
+	margin-left: 0;
+	padding-left: 0;
+	list-style-position: inside;
+}
+
+ul {
+	margin-left: 1em;
+	padding-left: 0;
+}
+
+div:last-child img:only-child {
+	margin: 0 auto; /* presume block level image */
+	display: block;
+}
+
+h5,
+h6,
+b,
+strong {
+	font-weight: bold;
+}
+
+i,
+em {
+	font-style: italic;
+}
+
+a {
+	color: rgb(0,113,188);
+ 	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+/*
+::-webkit-selection { background: #bff252; text-shadow: none; }
+::-moz-selection { 		background: #bff252; text-shadow: none; }
+::selection { 				background: #bff252; text-shadow: none; }
+*/
+
+/* typogrify */
+
+span.amp {
+	font-style: italic;
+	font-family: baskerville, palatino, 'palatino linotype', 'book antiqua', constantina, cambria, georgia, serif;
+}
+
+/*span.caps {
+	text-transform: lowercase;
+	letter-spacing: 1px;
+	font-style: normal;
+	font-variant: small-caps;
+}*/
+
+/* strictly enforce consistent line-height !important */
+
+body {
+	font-size: 18px !important;
+}
+
+html, body,
+address, blockquote, div, h1, h2, h3, h4, h5, h6, p, pre,
+dl, dt, dd, ol, ul, li,
+object,
+hr,
+del, ins,
+caption, td, th,
+map {
+	line-height: 1.77777778 !important; /* 18px x 1.77777778 = 32px */
+}
+
+div {
+	margin-bottom: 32px !important;
+}
+
+div:last-child {
+	margin-bottom: 0 ! important; /* attempt to prevent webkit margin splitting at end of component */
+}
+
+p + div {
+	margin-top: 32px !important;
+}
+
+blockquote {
+	margin-top: 32px !important;
+	margin-bottom: 32px !important;
+}
+
+h1 {
+	margin-bottom: 32px !important;
+	font-size: 39px !important;
+	line-height: 1.6410256 !important; /* 39px x 1.6410256 = 64px */
+}
+
+p + h1 {
+	margin-top: 32px !important;
+}
+
+h2 {
+	margin-bottom: 32px !important;
+	font-size: 30px !important;
+	line-height: 1.06666667 !important; /* 30px x 1.06666667 = 32px */
+}
+
+p + h2 {
+	margin-top: 32px !important;
+}
+
+h3 {
+	margin-bottom: 32px !important;
+	font-size: 26px !important;
+	line-height: 1.2307692 !important; /* 26px x 1.2307692 32px */
+}
+
+p + h3 {
+	margin-top: 32px !important;
+}
+
+h4 {
+	margin-bottom: 32px !important;
+	font-size: 21px !important;
+	line-height: 1.5238095 !important; /* 21px x 1.5238095 = 32px */
+}
+
+p + h4 {
+	margin-top: 32px !important;
+}
+
+h5,
+h6 {
+	margin-bottom: 32px !important;
+	font-size: 18px !important;
+	line-height: 1.77777778 !important;  /* 18px x 1.77777778 = 32px */
+}
+
+p + h5,
+p + h6 {
+	margin-top: 32px !important;
+}
+
+small {
+	font-size: 14px !important;
+	*line-height: 2.28571429 !important; /* ie7. 14px x 2.28571429 = 32px */
+}
+
+sup,
+sub {
+	position: relative;
+	font-size: 0.77777778em !important; /* 14px */
+	line-height: 0 !important;
+}
+
+sup {
+	top: -0.5em; /* 9px */
+}
+
+sub {
+	bottom: -0.27777778em; /* 5px */
+}
+
+hr {
+	height: 32px !important;
+	background: #fff; /* not really sure how to handle these yet, treating them as a section break */
+	border: none !important;
+}
+
+/* common classes */
+
+span.big,
+span.big1 {
+	font-size: 30px !important;
+	line-height: 1.06666667 !important; /* 30px x 1.06666667 = 32px */
+}
+
+div.copyright p {
+	margin-bottom: 32px !important;
+	text-indent: 0;
+}
+
+div.toc p.extract0 {
+	margin-top: 32px !important;
+}
+
+body p.extract {
+	text-indent: 1em;
+}
+
+/* give small screens a smaller default font */
+
+@media only screen and (max-width: 523px) {
+	body {
+		font-size: 16px !important;
+	}
+
+	html, body,
+	address, blockquote, div, h1, h2, h3, h4, h5, h6, p, pre,
+	dl, dt, dd, ol, ul, li,
+	object,
+	hr,
+	del, ins,
+	caption, td, th,
+	map {
+		line-height: 1.625 !important; /* 16px x 1.625 = 26px */
+	}
+
+	div {
+		margin-bottom: 26px !important;
+	}
+
+	div:last-child {
+	 margin-bottom: 0 !important; /* attempt to prevent webkit margin splitting at end of component */
+	}
+
+	p + div {
+		margin-top: 26px !important;
+	}
+
+	blockquote {
+		margin-top: 26px !important;
+		margin-bottom: 26px !important;
+	}
+
+	h1 {
+		margin-bottom: 26px !important;
+		font-size: 35px !important;
+		line-height: 1.4857142 !important; /* 35px x 1.4857142 = 52px */
+	}
+
+	p + h1 {
+		margin-top: 26px !important;
+	}
+
+	h2,
+	h3 {
+		margin-bottom: 26px !important;
+		font-size: 23px !important;
+		line-height: 1.1304347 !important; /* 23px x 1.1304347 = 26px */
+	}
+
+	p + h2,
+	p + h3 {
+		margin-top: 26px !important;
+	}
+
+	h4 {
+		margin-bottom: 26px !important;
+		font-size: 19px !important;
+		line-height: 1.368421 !important; /* 19px x 1.368421 = 26px */
+	}
+
+	p + h4 {
+		margin-top: 26px !important;
+	}
+
+	h5,
+	h6 {
+		margin-bottom: 26px !important;
+		line-height: 1.625 !important; /* 16px x 1.625 = 26px */
+	}
+
+	p + h5,
+	p + h6 {
+		margin-top: 26px !important;
+	}
+
+	small {
+		font-size: 12px !important;
+		*line-height: 2.16666667 !important; /* ie7. 12px x 2.16666667 = 26px */
+	}
+
+	sup,
+	sub {
+		font-size: 0.75em !important; /* 12px */
+	}
+
+	sub {
+		bottom: -0.25em; /* 4px */
+	}
+
+	hr {
+		height: 26px !important;
+	}
+
+	/* common classes */
+	div.copyright p {
+		margin-bottom: 26px !important;
+	}
+
+	div.toc p.extract0 {
+		margin-top: 26px !important;
+	}
+}
+
+/* more 'line-height enforcing' rules may be required */
