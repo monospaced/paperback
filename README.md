@@ -40,7 +40,7 @@ Then open the included sample book and start reading!
 
 ### Build Requirements
 
-Ebla uses [Sass](http://sass-lang.com/) and [Grunt](http://gruntjs.com/) to preprocess and build it’s CSS and JavaScript files.
+Ebla uses [Sass](http://sass-lang.com/) and [Grunt](http://gruntjs.com/) to preprocess and build its CSS and JavaScript files.
 
 It comes pre-built, so you can start using it straight away. To build a new version, you will need to have Ruby, Sass, Node and NPM installed.
 
@@ -52,7 +52,7 @@ To build Ebla (with the required dependencies); from inside the `ebla/` director
 
 ### AngularJS
 
-Ebla is using [AngularJS](https://angularjs.org/) to read the JSON files required to display each book. However, there is no intrinsic dependancy on AngularJS in Ebla’s current design - these aspects of the app could happily be rewritten with a server-side language, with the added benefit of removing the JavaScript dependency altogether (as the reader itself includes a no-js fallback).
+Ebla is using [AngularJS](https://angularjs.org/) to read the JSON files required to display each book. However, there is no intrinsic dependancy on AngularJS in Ebla’s current design—these aspects of the app could happily be rewritten with a server-side language, with the added benefit of removing the JavaScript dependency altogether (as the reader itself includes a no-js fallback).
 
 ## Melk
 
@@ -88,7 +88,7 @@ python melk <options> /path/to/epubs
 
 ## Why the names?
 
-The ancient city of Ebla is famous for it’s archive of roughly 20,000 cuneiform tablets, dating from around 2350 BC and written in both the Sumerian and Eblaite languages. The Ebla archive is considered (by some) to be the world’s oldest library.
+The ancient city of Ebla is famous for its archive of roughly 20,000 cuneiform tablets, dating from around 2350 BC and written in both the Sumerian and Eblaite languages. The Ebla archive is considered (by some) to be the world’s oldest library.
 
 Founded in the 12th century, the monastic library of Melk Abbey became renowned for its extensive manuscript collection. The monastery’s scriptorium was also a major site for the production of manuscripts.
 
