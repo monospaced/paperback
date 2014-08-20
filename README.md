@@ -16,7 +16,7 @@ Ebla and Melk are proof of concepts, further development is required!
 
 This project is open source and MIT licenced, so please do get involved :)
 
-See the [GitHub issues](https://github.com/monospaced/paperback/issues) for more information.
+Plan is to use [GitHub issues](https://github.com/monospaced/paperback/issues) to guide the development process.
 
 ## Ebla
 
