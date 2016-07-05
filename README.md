@@ -93,3 +93,7 @@ The ancient city of Ebla is famous for its archive of roughly 20,000 cuneiform t
 Founded in the 12th century, the monastic library of Melk Abbey became renowned for its extensive manuscript collection. The monastery’s scriptorium was also a major site for the production of manuscripts.
 
 The first Penguin paperbacks represented ease, accessibility, and democratisation of good literature—a paperback revolution.
+
+## Sample books
+
+[Enjoy some Paperbacks!](http://pageskip.monospaced.com/)
